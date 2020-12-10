@@ -26,7 +26,8 @@
       crossorigin="anonymous"
     />
     <!--Time/Date) link-->
-    <script src="luxon.js"></script>
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+
     <link rel="stylesheet" href="style.css" />
     <title>Work Day Scheduler</title>
   </head>
@@ -40,7 +41,7 @@
 
     <!-- Timeblocks go here -->
 
-    <!--START PLANNER ROWS-->
+    <!--START PLANNER ROWS (BOOTSTRAP)-->
     <div class="container" id="planner-container">
       <div class="row">
         <div class="input-group">
@@ -179,28 +180,50 @@
       </div>
     </div>
 
-    <script type="text/javascript">
+    <script>
+      // This document.ready isn't necessary in this example... but is needed in cases where the HTML is complex.
+      // This code makes sure that the JavaScript doesn't get run until the HTML is finished loading
+      // It's useful to become familiar with now.
 
-            // This document.ready isn't necessary in this example... but is needed in cases where the HTML is complex.
-            // This code makes sure that the JavaScript doesn't get run until the HTML is finished loading
-            // It's useful to become familiar with now.
+      $(document).ready(function () {
+        //setting date to top of page
 
-            $(document).ready(function() {
+        var date = $("#currentDay");
+        var currentDay = dayjs().format("DD/MM/YYYY");
+        date.html(currentDay);
+        $("#currentDay").append(date);
 
+        //variable for current hour that is pulled form days.js
+        // if hour block . than current hour then future, else if = current hour, present time,
+        function checkTime() {
+          var now = 20; //dayjs().format('YYYY-MM-DDTHH:mm:ssZ[Z]');
 
-             //setting date to top of page
+          console.log(now);
+          $(".hour").each(function () {
+            var blockHour = parseInt($(this).attr("id"));
+            console.log(blockHour);
+            if (blockHour < now) {
+              $(this).addClass("past");
+            } else if (blockHour === now) {
+              $(this).removeClass("past");
+              $(this).addClass("present");
+            } else {
+              $(this).remove("past");
+              $(this).removeClass("present");
+              $(this).addClass("future");
+            }
+          });
+        }
 
-              var currentDay = luxon.currentDay;
-              dt = currentDay.fromObject({day: 22, hour: 12, zone: 'America/Los_Angeles', numberingSystem: 'beng'})
+        checkTime();
 
-
-
-
-
-
-
-
-      }
+        /// click on save Btn to store in lcoal stoarge
+        var saveLocal = $(".form-control");
+        $(".saveBtn").on("click", function () {
+          console.log("Save Button Clicked");
+          localStorage.setItem("To Do", saveLocal);
+        });
+      });
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

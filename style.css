@@ -25,9 +25,15 @@ textarea {
   white-space: pre-wrap;
 }
 
-.time-block {
+.input-group-text {
   text-align: center;
   border-radius: 15px;
+}
+
+#currentDay {
+  text-align: center;
+  border-radius: 15px;
+  color: #000000;
 }
 
 .row {
